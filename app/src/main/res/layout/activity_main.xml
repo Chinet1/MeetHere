@@ -10,8 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.chinet.meethere.MainActivity">
 
-    <TextView
+    <Button
+        android:text="@string/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="goLogin"
+        android:id="@+id/go_login_button" />
 </RelativeLayout>

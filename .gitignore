@@ -11,3 +11,4 @@
 .externalNativeBuild
 *.apk
 *.ap_
+*.jks

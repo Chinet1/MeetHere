@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MeetHere</string>
+    <string name="login">Login!</string>
+    <string name="login_button">Sign in with Google!</string>
+    <string name="facebook_app_id">423036458042456</string>
+    <string name="fb_login_protocol_scheme">fb423036458042456</string>
 </resources>

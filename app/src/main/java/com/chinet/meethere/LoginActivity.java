@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 auth_dialog.show();
-                auth_dialog.setTitle("Authorize Learn2Crack");
+                auth_dialog.setTitle("Authorize");
                 auth_dialog.setCancelable(true);
             }
         });

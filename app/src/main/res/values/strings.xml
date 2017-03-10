@@ -4,4 +4,11 @@
     <string name="login_button">Sign in with Google!</string>
     <string name="facebook_app_id">423036458042456</string>
     <string name="fb_login_protocol_scheme">fb423036458042456</string>
+    <string name="sign_out">Sign out</string>
+    <string name="disconnect">Disconnected</string>
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="loading">Loading…</string>
+    <string name="signed_out">Signed out</string>
+    <string name="desc_google_icon">Google Logo</string>
+    <string name="title_text">Google Sign-In\nQuickstart</string>
 </resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "158534890919",
+    "project_id": "meethere-160715"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158534890919:android:c3d4a2128d735ac3",
+        "android_client_info": {
+          "package_name": "com.chinet.meethere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158534890919-rbfi0dgeauooscoq5ad4fmp3vlarucd6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "158534890919-dvribmq7g4mlhcqr0jolacgm2q8etd5i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chinet.meethere",
+            "certificate_hash": "ea5b4dfd625b04eb4aeedff22baf929aa6d88444"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU7h5vgyjNmOVnMP99dG2JVSGlEHQjDL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

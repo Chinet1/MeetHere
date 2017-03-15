@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         for (User cn : users) {
             String log = "Id: "+cn.getId()+" ,Name: " + cn.getName() + ",Surname: " + cn.getSurname()
-                    + ", Email: " + cn.getEmail();
+                    + ", Email: " + cn.getEmail() ;
             // Writing Contacts to log
             Log.d("Name: ", log);
         }

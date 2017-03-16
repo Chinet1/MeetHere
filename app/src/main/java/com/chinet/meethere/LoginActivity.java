@@ -16,23 +16,17 @@ public class LoginActivity extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(this);
 
-        /**
-         * CRUD Operations
-         * */
-        // Inserting Contacts
         Log.d("Insert: ", "Inserting ..");
         db.addUser(new User("Ravi", "Haris", "ravi@example.com", "Los Angels", "10.05.1985"));
-        db.addUser(new User("Srinivas", "Paul", "paul@example.com", "Beth", "7.09.2001"));
+        db.addUser(new User("Srinivas", "Paul", "paul@example.com", "New York", "7.09.2001"));
 
-        // Reading all contacts
-        Log.d("Reading: ", "Reading all contacts..");
+        Log.d("Reading: ", "Reading all users..");
         List<User> users = db.getAllUsers();
 
-        for (User cn : users) {
-            String log = "Id: "+cn.getId()+" ,Name: " + cn.getName() + ",Surname: " + cn.getSurname()
-                    + ", Email: " + cn.getEmail() ;
-            // Writing Contacts to log
+        for (User usr : users) {
+            String log = "Id: "+usr.getId()+" ,Name: " + usr.getName() + ",Surname: " + usr.getSurname()
+                    + ", Email: " + usr.getEmail() ;
             Log.d("Name: ", log);
         }
-        }
+    }
 }

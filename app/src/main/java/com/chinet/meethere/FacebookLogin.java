@@ -27,21 +27,21 @@ public class FacebookLogin extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         // App code
-                        Log.v("Success", "Facebook login success");
+                        Log.d("Success", "Facebook login success");
                         Toast.makeText(getApplicationContext() ,"Facebook login success", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCancel() {
                         // App code
-                        Log.v("Cancel", "Facebook login cancel");
+                        Log.d("Cancel", "Facebook login cancel");
                         Toast.makeText(getApplicationContext() ,"Facebook login cancel", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
                         // App code
-                        Log.v("Error", "Facebook login error");
+                        Log.d("Error", "Facebook login error");
                         Toast.makeText(getApplicationContext() ,"Facebook login error", Toast.LENGTH_SHORT).show();
                     }
                 });

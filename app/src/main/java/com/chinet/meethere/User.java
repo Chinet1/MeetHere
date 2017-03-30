@@ -8,24 +8,27 @@ public class User {
     private String email;
     private String city;
     private String dayOfBirthday;
+    private String createdAt;
 
     public User() {}
 
-    public User(int id, String name, String surname, String email, String city, String dayOfBirthday) {
+    public User(int id, String name, String surname, String email, String city, String dayOfBirthday, String createdAt) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.city = city;
         this.dayOfBirthday = dayOfBirthday;
+        this.createdAt = createdAt;
     }
 
-    public User(String name, String surname, String email, String city, String dayOfBirthday) {
+    public User(String name, String surname, String email, String city, String dayOfBirthday, String createdAt) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.city = city;
         this.dayOfBirthday = dayOfBirthday;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -74,5 +77,13 @@ public class User {
 
     public void setDayOfBirthday(String dayOfBirthday) {
         this.dayOfBirthday = dayOfBirthday;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

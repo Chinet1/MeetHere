@@ -11,4 +11,8 @@
     <string name="signed_out">Signed out</string>
     <string name="desc_google_icon">Google Logo</string>
     <string name="title_text">Google Sign-In\nQuickstart</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="profile">Profile</string>
+    <string name="user_profile">User profile</string>
+    <string name="friends">Friends</string>
 </resources>

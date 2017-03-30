@@ -95,6 +95,15 @@
             android:visibility="visible"
             tools:visibility="gone" />
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/Access"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="73dp" />
+
     <LinearLayout
         android:id="@+id/sign_out_and_disconnect"
         android:layout_width="fill_parent"
@@ -104,7 +113,7 @@
         android:paddingRight="16dp"
         android:visibility="gone"
         tools:visibility="visible"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="57dp"
         android:layout_below="@+id/login_button"
         android:layout_alignParentStart="true">
 
@@ -122,15 +131,6 @@
             android:layout_weight="1"
             android:text="@string/disconnect" />
     </LinearLayout>
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/Access"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="73dp" />
 
 
 </RelativeLayout>

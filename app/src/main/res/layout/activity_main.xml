@@ -17,5 +17,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:onClick="goLogin"
-        android:id="@+id/go_login_button" />
+        android:id="@+id/goLoginButton" />
+
+    <Button
+        android:text="@string/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goLoginButton"
+        android:layout_alignStart="@+id/goLoginButton"
+        android:layout_marginTop="14dp"
+        android:onClick="goUserView"
+        android:id="@+id/goUserViewButton" />
 </RelativeLayout>

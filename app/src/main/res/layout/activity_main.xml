@@ -28,4 +28,14 @@
         android:layout_marginTop="14dp"
         android:onClick="goUserView"
         android:id="@+id/goUserViewButton" />
+
+    <Button
+        android:text="@string/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goUserViewButton"
+        android:layout_alignStart="@+id/goUserViewButton"
+        android:layout_marginTop="10dp"
+        android:onClick="goLocationActivity"
+        android:id="@+id/goLocationActivityButton" />
 </RelativeLayout>

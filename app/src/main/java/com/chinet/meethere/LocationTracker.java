@@ -4,16 +4,23 @@ import android.Manifest;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class LocationTracker implements LocationListener {
 
-    private final Context mContext;
+    private Context mContext;
 
     public boolean isGPSEnabled = false;
     private boolean isNetworkEnabled = false;
@@ -25,14 +32,22 @@ public class LocationTracker implements LocationListener {
     private double longitude;
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1; // 10 meters
-    private static final long MIN_TIME_BETWEEN_UPDATES = 1; // minute
+    private static final long MIN_TIME_BETWEEN_UPDATES = 1000 * 60 * 4;
+
+    private static final LocationTracker INSTANCE = new LocationTracker();
 
     protected LocationManager locationManager;
 
-    public LocationTracker(Context mContext) {
+    private LocationTracker() {}
+
+    public void init(Context mContext) {
         this.mContext = mContext;
         checkPermission();
         getLocation();
+    }
+
+    public static LocationTracker getInstance() {
+        return INSTANCE;
     }
 
     public Location getLocation() {
@@ -43,12 +58,12 @@ public class LocationTracker implements LocationListener {
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            Log.v("isGPSEnabled", "=" + isGPSEnabled);
+            Log.d("isGPSEnabled", "=" + isGPSEnabled);
 
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            Log.v("isNetworkEnabled", "=" + isNetworkEnabled);
+            Log.d("isNetworkEnabled", "=" + isNetworkEnabled);
 
             if (isNotLocationEnabled()) {
             } else {
@@ -71,7 +86,7 @@ public class LocationTracker implements LocationListener {
                 }
                 if (isGPSEnabled) {
                     this.canGetLocation = true;
-                    location=null;
+                    location = null;
                     if (location == null) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
@@ -97,12 +112,29 @@ public class LocationTracker implements LocationListener {
         return location;
     }
 
+    public String getLocationName() {
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+        try {
+            List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if(null!=listAddresses&&listAddresses.size()>0){
+                String locationName = listAddresses.get(0).getLocality();
+                locationName += " " + listAddresses.get(0).getAddressLine(0);
+                return locationName;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
 
     public void stopUsingGPS() {
         if (locationManager != null && checkPermission()) {
+            Log.d("GPS", "Stopped using GPS");
             locationManager.removeUpdates(LocationTracker.this);
+            locationManager = null;
         }
     }
+
 
     public boolean canGetLocation() {
         return this.canGetLocation;
@@ -113,7 +145,7 @@ public class LocationTracker implements LocationListener {
     }
 
     public Boolean checkPermission() {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext,
                 Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return true;

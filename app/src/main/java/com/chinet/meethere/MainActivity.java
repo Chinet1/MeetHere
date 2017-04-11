@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +16,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        locationTrackerPermission();
+    }
+
+    private void locationTrackerPermission() {
+        LocationTracker locationTracker = LocationTracker.getInstance();
+        locationTracker.init(this);
+        if (locationTracker.checkPermission()) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
+        }
+        if (locationTracker.checkPermission()) {
+            Toast.makeText(this, "You must allow localization to use all functions.", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void goLogin(View view) {
@@ -28,12 +43,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goLocationActivity(View view) {
-        LocationTracker locationTracker = new LocationTracker(this);
-        if (locationTracker.checkPermission()) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
-        }
         Intent intent = new Intent(this, LocationActivity.class);
         startActivity(intent);
     }
+
+
 }

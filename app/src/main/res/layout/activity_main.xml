@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/goLoginButton"
         android:layout_alignStart="@+id/goLoginButton"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="15dp"
         android:onClick="goUserView"
         android:id="@+id/goUserViewButton" />
 
@@ -35,7 +35,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/goUserViewButton"
         android:layout_alignStart="@+id/goUserViewButton"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:onClick="goLocationActivity"
         android:id="@+id/goLocationActivityButton" />
+
+    <Button
+        android:text="@string/maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goLocationActivityButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:onClick="goMapsActivity"
+        android:id="@+id/goMapsActivityButton" />
 </RelativeLayout>

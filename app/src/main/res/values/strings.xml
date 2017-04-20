@@ -17,4 +17,6 @@
     <string name="friends">Friends</string>
     <string name="location">Location</string>
     <string name="my_service_desc">Location description</string>
+    <string name="title_activity_mapsdsa">Map</string>
+    <string name="maps">Maps</string>
 </resources>

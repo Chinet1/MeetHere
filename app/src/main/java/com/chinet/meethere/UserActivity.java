@@ -18,8 +18,8 @@ import java.util.concurrent.ExecutionException;
 
 public class UserActivity extends AppCompatActivity {
 
-    private int userID = 10;
-    private String url = "http://chinet.cba.pl/meethere.php?user=" + userID;
+    private int userId;
+    private String url;
     private String[] user;
 
     @Override
@@ -27,33 +27,44 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        try {
-           user = new GetUser(this).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        userId = SaveSharedPreference.getId(getApplicationContext());
+
+        if (userId == 0) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+
+        } else {
+
+            url = "http://chinet.cba.pl/meethere.php?user=" + userId;
+            Log.d("UserActivity", url);
+            try {
+                user = new GetUser(this).execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            String name = user[1] + " " + user[2];
+            Integer age = calculateYears(user[5]);
+            String city = "City: " + user[4];
+
+            String ageString = "Age: " + age;
+
+            TextView nameText = (TextView) findViewById(R.id.nameText);
+            nameText.setText(name);
+
+            TextView ageText = (TextView) findViewById(R.id.ageText);
+            ageText.setText(ageString);
+
+            TextView cityText = (TextView) findViewById(R.id.cityText);
+            cityText.setText(city);
         }
-
-        String name = user[1] + " " + user[2];
-        Integer age = calculateYears(user[5]);
-        String city = "City: " + user[4];
-
-        String ageString = "Age: " + age;
-
-        TextView nameText = (TextView) findViewById(R.id.nameText);
-        nameText.setText(name);
-
-        TextView ageText = (TextView) findViewById(R.id.ageText);
-        ageText.setText(ageString);
-
-        TextView cityText = (TextView) findViewById(R.id.cityText);
-        cityText.setText(city);
     }
 
     public void goFriends(View view) {
         Intent intent = new Intent(this, FriendsActivity.class);
-        intent.putExtra("userID", userID);
+        intent.putExtra("userID", userId);
         startActivity(intent);
     }
 

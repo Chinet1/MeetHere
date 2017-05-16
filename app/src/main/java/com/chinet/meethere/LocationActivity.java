@@ -13,7 +13,6 @@ public class LocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location);
 
         LocationTracker locationTracker = LocationTracker.getInstance();
-
         locationTracker.init(this);
 
         TextView locationInfo = (TextView) findViewById(R.id.locationInfoText);

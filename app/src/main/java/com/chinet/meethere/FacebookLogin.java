@@ -44,7 +44,6 @@ public class FacebookLogin extends Fragment {
     private ProfileTracker profileTracker;
     private TextView greeting;
     private String url;
-    private String urlNewUser;
     private String emailCheckStatus;
     private FacebookLogin instance;
     private String lastLocalization;
@@ -80,90 +79,86 @@ public class FacebookLogin extends Fragment {
                 "public_profile", "email", "user_birthday", "user_location"));
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            Toast toast = Toast.makeText(getActivity(), "Logged In", Toast.LENGTH_SHORT);
+            postingEnabled = true;
+            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                Toast toast = Toast.makeText(getActivity(), "Logged In", Toast.LENGTH_SHORT);
-                postingEnabled = true;
-
-                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                try {
-                                    String first_name = object.getString("first_name");
-                                    String last_name = object.getString("last_name");
-                                    String email = object.getString("email");
-                                    String birthdaySource = object.getString("birthday");
-                                    String[] date = birthdaySource.split("/");
-                                    String birthday = date[2] + ", " + date[1] + ", " + date[0];
-                                    String city = object.getJSONObject("location").getString("name");
-
-                                    url = "http://chinet.cba.pl/meethere.php?thatEmail=" + email;
-
-                                    try {
-                                        emailCheckStatus = new dbOperation(instance).execute().get();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    if (Objects.equals(emailCheckStatus, "success")) {
-                                        LocationTracker locationTracker = LocationTracker.getInstance();
-
-                                        if (locationTracker.canGetLocation()) {
-                                            lastLocalization = locationTracker.getLatitude()
-                                                    + ", " + locationTracker.getLongitude();
-                                        }
-                                        locationTracker.stopUsingGPS();
-
-                                        url = "http://chinet.cba.pl/meethere.php?addUser="
-                                                + first_name + "&surname=" + last_name + "&email="
-                                                + email + "&city=" + city + "&dayOfBirthday="
-                                                + birthday + "&lastLocalization=" + lastLocalization;
-
-                                        try {
-                                            addingNewUser = new dbOperation(instance).execute().get();
-                                            userId = Integer.parseInt(addingNewUser);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        } catch (ExecutionException e) {
-                                            e.printStackTrace();
-                                        }
-                                    } else {
-                                        Log.d("Email check", "fail");
-                                        userId = Integer.parseInt(emailCheckStatus);
-                                    }
-
-                                    SaveSharedPreference.setPrefId(getContext(), userId);
-
-                                    Log.d("UserFacebookData", email + birthday + city);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,first_name,last_name,birthday,location,link,email");
-                request.setParameters(parameters);
-                request.executeAsync();
-
-                loginButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("public_profile"));
-                        if(!postingEnabled) {
-                            postingEnabled = true;
-                        }else{
-                            postingEnabled = false;
-
-                        }
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                try {
+                    String first_name = object.getString("first_name");
+                    String last_name = object.getString("last_name");
+                    String email = object.getString("email");
+                    String birthdaySource = object.getString("birthday");
+                    String[] date = birthdaySource.split("/");
+                    String birthday = date[2] + ", " + date[1] + ", " + date[0];
+                    String city = object.getJSONObject("location").getString("name");
+                    url = "http://chinet.cba.pl/meethere.php?thatEmail=" + email;
+                    try {
+                        emailCheckStatus = new dbOperation(instance).execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
-                });
+                    if (Objects.equals(emailCheckStatus, "success")) {
+                        LocationTracker locationTracker = LocationTracker.getInstance();
 
-                toast.show();
-                updateUI();
+                        if (locationTracker.canGetLocation()) {
+                            lastLocalization = locationTracker.getLatitude()
+                                    + ", " + locationTracker.getLongitude();
+                        }
+                        locationTracker.stopUsingGPS();
+
+                        url = "http://chinet.cba.pl/meethere.php?addUser="
+                                + first_name + "&surname=" + last_name + "&email="
+                                + email + "&city=" + city + "&dayOfBirthday="
+                                + birthday + "&lastLocalization=" + lastLocalization;
+
+                        try {
+                            addingNewUser = new dbOperation(instance).execute().get();
+                            userId = Integer.parseInt(addingNewUser);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d("Email check", "fail");
+                        userId = Integer.parseInt(emailCheckStatus);
+                        }
+
+                        SaveSharedPreference.setPrefId(getContext(), userId);
+
+                        Log.d("UserFacebookData", email + birthday + city);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,first_name,last_name,birthday,location,link,email");
+            request.setParameters(parameters);
+            request.executeAsync();
+
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("public_profile"));
+                    if(!postingEnabled) {
+                        postingEnabled = true;
+                    }else{
+                        postingEnabled = false;
+
+                    }
+                }
+            });
+
+            toast.show();
+            updateUI();
             }
 
 

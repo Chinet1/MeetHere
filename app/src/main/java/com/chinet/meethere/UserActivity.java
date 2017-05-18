@@ -1,72 +1,53 @@
 package com.chinet.meethere;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
-
 public class UserActivity extends AppCompatActivity {
 
-    private int userID = 2;
+    private int userId;
+    private String url;
+    private UserHelper userHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        userId = SaveSharedPreference.getId(getApplicationContext());
 
-        User user = db.getUser(userID);
+        if (userId == 0) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
 
-        String name = user.getName() + " " + user.getSurname();
-        Integer age = calculateYears(user.getDayOfBirthday());
-        String city = "City: " + user.getCity();
-        Integer daysInApp = calculateDays(user.getCreatedAt());
+        } else {
 
-        String ageString = "Age: " + age;
-        String daysInAppString = "You are " + daysInApp + " days in here.";
+            url = "http://chinet.cba.pl/meethere.php?user=" + userId;
+            Log.d("UserActivity", url);
 
-        TextView nameText = (TextView)findViewById(R.id.nameText);
-        nameText.setText(name);
+            userHelper = new UserHelper();
 
-        TextView ageText = (TextView)findViewById(R.id.ageText);
-        ageText.setText(ageString);
+            String[] userData = userHelper.getUserFromWS(url);
 
-        TextView cityText = (TextView)findViewById(R.id.cityText);
-        cityText.setText(city);
+            TextView nameText = (TextView) findViewById(R.id.nameText);
+            nameText.setText(userData[0]);
 
-        TextView diApp = (TextView)findViewById(R.id.diAppText);
-        diApp.setText(daysInAppString);
+            TextView ageText = (TextView) findViewById(R.id.ageText);
+            ageText.setText(userData[1]);
+
+            TextView cityText = (TextView) findViewById(R.id.cityText);
+            cityText.setText(userData[2]);
+        }
     }
 
     public void goFriends(View view) {
         Intent intent = new Intent(this, FriendsActivity.class);
-        intent.putExtra("userID", userID);
+        intent.putExtra("userID", userId);
         startActivity(intent);
-    }
-
-    private Integer calculateYears(String dataFrom) {
-        String[] parts = dataFrom.split(", ");
-        LocalDate df = new LocalDate(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2]));
-        LocalDate now = new LocalDate();
-        Years yearsIns = Years.yearsBetween(df, now);
-        Integer years = yearsIns.getYears();
-        return years;
-    }
-
-    private Integer calculateDays(String date) {
-        String[] parts = date.split(", ");
-        LocalDate dt = new LocalDate(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
-                Integer.parseInt(parts[2]));
-        LocalDate now = new LocalDate();
-        Days daysIns = Days.daysBetween(dt, now);
-        Integer days = daysIns.getDays();
-        return days;
     }
 }

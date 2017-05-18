@@ -19,4 +19,8 @@
     <string name="my_service_desc">Location description</string>
     <string name="title_activity_mapsdsa">Map</string>
     <string name="maps">Maps</string>
+    <string name="hello_user">Hello %1$s!</string>
+    <string name="name">Name</string>
+    <string name="search">Search</string>
+    <string name="surname">Surname</string>
 </resources>

@@ -2,5 +2,6 @@
     android:id="@+id/Row"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:textSize="15sp" >
+    android:textSize="18sp"
+    android:padding="20sp">
 </TextView>

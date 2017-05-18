@@ -48,4 +48,14 @@
         android:layout_marginTop="15dp"
         android:onClick="goMapsActivity"
         android:id="@+id/goMapsActivityButton" />
+
+    <Button
+        android:text="@string/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goMapsActivityButton"
+        android:layout_alignStart="@+id/goMapsActivityButton"
+        android:layout_marginTop="24dp"
+        android:onClick="goSearchActivity"
+        android:id="@+id/goSearchActivityButton" />
 </RelativeLayout>

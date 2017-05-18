@@ -52,4 +52,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
+
+    public void goSearchActivity(View view) {
+        Intent intent = new Intent(this, SearchFriendActivity.class);
+        startActivity(intent);
+    }
 }

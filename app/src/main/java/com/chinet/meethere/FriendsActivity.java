@@ -12,6 +12,10 @@ public class FriendsActivity extends AppCompatActivity {
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
+    private String url;
+    private WebServiceHelper webServiceHelper;
+    private ArrayList<String> friends;
+    private String[][] list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +24,22 @@ public class FriendsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
 
         int userID = bundle.getInt("userID");
-
-        DatabaseHandler db = new DatabaseHandler(this);
-
-        List<User> friendsList = db.getAllFriends(userID);
+        url = "http://chinet.cba.pl/meethere.php?getFriends=" + userID;
+        webServiceHelper = new WebServiceHelper();
+        list = webServiceHelper.getFriends(url);
 
         listView = (ListView) findViewById(R.id.friendsListView);
+        
+        friends = new ArrayList<String>();
 
-        ArrayList<String> friendsL = new ArrayList<String>();
-
-        for (User user : friendsList) {
-            friendsL.add(user.getName() + " " + user.getSurname());
+        for (int i=0; i<list.length; i++) {
+            friends.add(list[i][1] + " " + list[i][2]);
         }
 
-        adapter = new ArrayAdapter<String>(this, R.layout.row, friendsL);
+        adapter = new ArrayAdapter<String>(this, R.layout.row, friends);
+
+        adapter.notifyDataSetChanged();
 
         listView.setAdapter(adapter);
-
-        db.closeDB();
     }
 }

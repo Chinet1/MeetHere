@@ -29,7 +29,8 @@ public class SearchFriendActivity extends AppCompatActivity {
     private String[][] list;
     private EditText eName;
     private EditText eSurname;
-    ArrayList<String> friends;
+    private ArrayList<String> friends;
+    private WebServiceHelper webServiceHelper;
 
 
     @Override
@@ -59,14 +60,8 @@ public class SearchFriendActivity extends AppCompatActivity {
         String name = eName.getText().toString();
         String surname = eSurname.getText().toString();
         url = "http://chinet.cba.pl/meethere.php?search=" + name + "&surname=" + surname;
-
-        try {
-            list = new SearchFriends(this).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        webServiceHelper = new WebServiceHelper();
+        list = webServiceHelper.getFriends(url);
 
         friends = new ArrayList<String>();
 
@@ -79,50 +74,5 @@ public class SearchFriendActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         listView.setAdapter(adapter);
-    }
-
-    private class SearchFriends extends AsyncTask<String[][], Void, String[][]> {
-
-        private static final String TAG = "SearchFriends";
-        SearchFriendActivity searchFriendActivity;
-
-        public SearchFriends(SearchFriendActivity searchFriendActivity) {
-            this.searchFriendActivity = searchFriendActivity;
-        }
-
-        @Override
-        protected String[][] doInBackground(String[][]... strings) {
-
-            WebServiceHandler webServiceHandler = new WebServiceHandler();
-            String jsonStr = webServiceHandler.makeServiceCall(url);
-            String[] list;
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObject = new JSONObject(jsonStr);
-
-                    JSONArray u = jsonObject.getJSONArray("user");
-
-                    user = new String[u.length()][3];
-                    Log.d(TAG, u.getJSONObject(0).getString("ID"));
-                    for (int i=0; i<u.length(); i++) {
-                        user[i][0] = u.getJSONObject(i).getString("ID");
-                        user[i][1] = u.getJSONObject(i).getString("name");
-                        user[i][2] = u.getJSONObject(i).getString("surname");
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                }
-            } else {
-                Log.e(TAG, "Couldn't get json from server.");
-            }
-
-            return user;
-        }
-
-        @Override
-        protected void onPostExecute(String[][] lists) {
-
-        }
     }
 }

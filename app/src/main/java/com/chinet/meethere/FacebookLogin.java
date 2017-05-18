@@ -50,6 +50,7 @@ public class FacebookLogin extends Fragment {
     private String addingNewUser;
     private int userId;
     private AccessTokenTracker fbTracker;
+    private WebServiceHelper webServiceHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,13 +97,8 @@ public class FacebookLogin extends Fragment {
                     String birthday = date[2] + ", " + date[1] + ", " + date[0];
                     String city = object.getJSONObject("location").getString("name");
                     url = "http://chinet.cba.pl/meethere.php?thatEmail=" + email;
-                    try {
-                        emailCheckStatus = new dbOperation(instance).execute().get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    webServiceHelper = new WebServiceHelper();
+                    emailCheckStatus = webServiceHelper.makeDBOperation(url);
                     if (Objects.equals(emailCheckStatus, "success")) {
                         LocationTracker locationTracker = LocationTracker.getInstance();
 
@@ -117,14 +113,8 @@ public class FacebookLogin extends Fragment {
                                 + email + "&city=" + city + "&dayOfBirthday="
                                 + birthday + "&lastLocalization=" + lastLocalization;
 
-                        try {
-                            addingNewUser = new dbOperation(instance).execute().get();
-                            userId = Integer.parseInt(addingNewUser);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+                        addingNewUser = webServiceHelper.makeDBOperation(url);
+                        userId = Integer.parseInt(addingNewUser);
                     } else {
                         Log.d("Email check", "fail");
                         userId = Integer.parseInt(emailCheckStatus);
@@ -238,42 +228,5 @@ public class FacebookLogin extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-    private class dbOperation extends AsyncTask<String, Void, String> {
-
-        private static final String TAG = "dbOperation";
-        private FacebookLogin facebookLogin;
-
-        public dbOperation(FacebookLogin facebookLogin) {
-            this.facebookLogin = facebookLogin;
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            WebServiceHandler webServiceHandler = new WebServiceHandler();
-            String jsonStr = webServiceHandler.makeServiceCall(url);
-
-            Log.d(TAG, "Response form url: " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObject = new JSONObject(jsonStr);
-                    String response = jsonObject.getString("operation");
-                    String id = jsonObject.getString("id");
-
-                    if (Objects.equals(response, "success")) {
-                        return "success";
-                    } else {
-                        return id;
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return "fail";
-        }
     }
 }

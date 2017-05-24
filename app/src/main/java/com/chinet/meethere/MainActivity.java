@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             JobInfo.Builder builder = new JobInfo.Builder( 1,
                     new ComponentName(getPackageName(), JobSchedulerService.class.getName()));
 
-            builder.setPeriodic(1000 * 100);
+            builder.setPeriodic(1000 * 3600);
 
             if(jobScheduler.schedule(builder.build())<=0)  {
                 Log.d("LocationUpdater", "Something was wrong");

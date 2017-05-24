@@ -102,13 +102,14 @@ public class LocationTracker implements LocationListener {
                             }
                         }
                     }
+                    locationManager.removeUpdates(LocationTracker.this);
+                    locationManager = null;
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return location;
     }
 

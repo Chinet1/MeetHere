@@ -2,7 +2,6 @@ package com.chinet.meethere;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import static com.chinet.meethere.SaveSharedPreference.getSharedPreferences;
 
@@ -120,11 +118,9 @@ public class FacebookLogin extends Fragment {
                     } else {
                         Log.d("Email check", "fail");
                         userId = Integer.parseInt(emailCheckStatus);
-                        }
-
-                        SaveSharedPreference.setPrefId(getContext(), userId);
-
-                        Log.d("UserFacebookData", email + birthday + city);
+                    }
+                    SaveSharedPreference.setPrefId(getContext(), userId);
+                    Log.d("UserFacebookData", email + birthday + city);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -144,11 +140,9 @@ public class FacebookLogin extends Fragment {
                         postingEnabled = true;
                     }else{
                         postingEnabled = false;
-
                     }
                 }
             });
-
             toast.show();
             updateUI();
             }

@@ -52,6 +52,8 @@
         <activity android:name=".UserActivity" />
         <activity android:name=".LocationActivity" />
         <activity android:name=".MapsActivity" />
+        <service android:name=".JobSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

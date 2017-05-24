@@ -31,18 +31,26 @@ public class SearchFriendActivity extends AppCompatActivity {
     private EditText eSurname;
     private ArrayList<String> friends;
     private WebServiceHelper webServiceHelper;
+    private int userId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friend);
+        userId = SaveSharedPreference.getId(getApplicationContext());
 
-        eName = (EditText)findViewById(R.id.nameText);
-        eSurname = (EditText)findViewById(R.id.surnameText);
-        listView = (ListView) findViewById(R.id.searchFriendsList);
+        if (userId == 0) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
 
-        listView.setOnItemClickListener(itemClicked);
+        } else {
+            eName = (EditText) findViewById(R.id.nameText);
+            eSurname = (EditText) findViewById(R.id.surnameText);
+            listView = (ListView) findViewById(R.id.searchFriendsList);
+
+            listView.setOnItemClickListener(itemClicked);
+        }
     }
 
     private AdapterView.OnItemClickListener itemClicked =  new AdapterView.OnItemClickListener() {
@@ -59,14 +67,17 @@ public class SearchFriendActivity extends AppCompatActivity {
 
         String name = eName.getText().toString();
         String surname = eSurname.getText().toString();
-        url = "http://chinet.cba.pl/meethere.php?search=" + name + "&surname=" + surname;
+        url = "http://chinet.cba.pl/meethere.php?search=" + name + "&surname=" + surname
+                + "&key=" + getString(R.string.key_web_service);
         webServiceHelper = new WebServiceHelper();
         list = webServiceHelper.getFriends(url);
 
         friends = new ArrayList<String>();
 
         for (int i=0; i<list.length; i++) {
-            friends.add(list[i][1] + " " + list[i][2]);
+            if (Integer.parseInt(list[i][0]) != userId) {
+                friends.add(list[i][1] + " " + list[i][2]);
+            }
         }
 
         adapter = new ArrayAdapter<String>(this, R.layout.row, friends);

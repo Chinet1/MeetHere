@@ -96,7 +96,8 @@ public class FacebookLogin extends Fragment {
                     String[] date = birthdaySource.split("/");
                     String birthday = date[2] + ", " + date[1] + ", " + date[0];
                     String city = object.getJSONObject("location").getString("name");
-                    url = "http://chinet.cba.pl/meethere.php?thatEmail=" + email;
+                    url = "http://chinet.cba.pl/meethere.php?thatEmail=" + email
+                            + "&key=" + getString(R.string.key_web_service);
                     webServiceHelper = new WebServiceHelper();
                     emailCheckStatus = webServiceHelper.makeDBOperation(url);
                     if (Objects.equals(emailCheckStatus, "success")) {
@@ -111,7 +112,8 @@ public class FacebookLogin extends Fragment {
                         url = "http://chinet.cba.pl/meethere.php?addUser="
                                 + first_name + "&surname=" + last_name + "&email="
                                 + email + "&city=" + city + "&dayOfBirthday="
-                                + birthday + "&lastLocalization=" + lastLocalization;
+                                + birthday + "&lastLocalization=" + lastLocalization
+                                + "&key=" + getString(R.string.key_web_service);
 
                         addingNewUser = webServiceHelper.makeDBOperation(url);
                         userId = Integer.parseInt(addingNewUser);

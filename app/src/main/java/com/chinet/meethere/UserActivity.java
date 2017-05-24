@@ -27,7 +27,8 @@ public class UserActivity extends AppCompatActivity {
 
         } else {
 
-            url = "http://chinet.cba.pl/meethere.php?user=" + userId;
+            url = "http://chinet.cba.pl/meethere.php?user=" + userId
+                    + "&key=" + getString(R.string.key_web_service);
             Log.d("UserActivity", url);
 
             userHelper = new UserHelper();

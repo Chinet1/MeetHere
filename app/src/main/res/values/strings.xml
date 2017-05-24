@@ -24,4 +24,5 @@
     <string name="search">Search</string>
     <string name="surname">Surname</string>
     <string name="add_user">Add User</string>
+    <string name="key_web_service">SECRET</string>
 </resources>
